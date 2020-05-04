@@ -9,11 +9,14 @@ var passport= require('passport');
 var authenticate = require('./authenticate');
 var config = require('./config');
 
+
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var dishRouter = require('./routes/dishRouter');
 var promoRouter = require('./routes/promoRouter');
 var leaderRouter = require('./routes/leaderRouter');
+const uploadRouter = require('./routes/uploadRouter');  
 
 const mongoose = require('mongoose');
 
@@ -49,12 +52,13 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+app.use('/imageUpload',uploadRouter);
 app.use('/dishes',dishRouter);
 app.use('/promotions',promoRouter);
 app.use('/leaders',leaderRouter);
