@@ -9,8 +9,6 @@ var passport= require('passport');
 var authenticate = require('./authenticate');
 var config = require('./config');
 
-
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var dishRouter = require('./routes/dishRouter');
@@ -28,6 +26,16 @@ const url = config.mongoUrl;
 const connect = mongoose.connect(url);
 
 var app = express();
+
+// Secure traffic only
+app.all('*', (req, res, next) => {
+  if (req.secure) {
+    return next();
+  }
+  else {
+    res.redirect(307, 'https://' + req.hostname + ':' + app.get('secPort') + req.url);
+  }
+});
 
 connect.then((db) => {
   console.log("Connected correctly to server");
